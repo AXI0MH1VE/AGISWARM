@@ -1,0 +1,17 @@
+system:
+  N: 8
+  R: 5
+  cycle_deadline_ms: 120
+
+transport:
+  type: udp
+  aggregator_host: "127.0.0.1"
+  aggregator_port: 6000
+  worker_port_start: 6001
+
+simulation:
+  jitter_min_ms: 5
+  jitter_max_ms: 40
+  straggler_prob: 0.2
+  packet_loss_prob: 0.05
+

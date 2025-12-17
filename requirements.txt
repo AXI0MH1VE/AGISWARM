@@ -1,0 +1,8 @@
+asyncio
+cbor2
+pynacl
+numpy
+pyyaml
+pandas
+matplotlib
+
