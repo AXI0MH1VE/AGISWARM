@@ -26,8 +26,26 @@ class WorkerProtocol(asyncio.DatagramProtocol):
     async def process_task(self, msg, addr):
         sleep_ms = random.uniform(*self.jitter)
         await asyncio.sleep(sleep_ms / 1000.0)
-        # Dummy Result (Normally result of matvec)
-        result_vec = [10000] * 4 # Placeholder
+        
+        # Extract coded matrix block and x_fixed vector from the message
+        x_fixed = msg['x']
+        coeffs = msg['c']
+        
+        # Compute matrix-vector product: y = M * x
+        # If coded matrix M is provided, use it; otherwise fall back to identity-like behavior
+        if 'M' in msg and msg['M']:
+            coded_matrix = msg['M']
+            result_vec = matvec_fixed(coded_matrix, x_fixed)
+        else:
+            # Fallback for backward compatibility: simple coded computation
+            result_vec = []
+            for i in range(len(x_fixed)):
+                acc = 0
+                for c_idx, coeff in enumerate(coeffs):
+                    if c_idx < len(x_fixed):
+                        acc += coeff * x_fixed[c_idx]
+                result_vec.append(acc)
+        
         resp = {
             "t": "RES",
             "seq": msg['seq'],
