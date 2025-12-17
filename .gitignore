@@ -1,0 +1,40 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Metrics and output files
+metrics.csv
+proposed_state.json
+
+# Keys (security)
+*.sk
+operator.sk
+authorized_keys.txt
+
+# Temporary files
+*.tmp
+/tmp/
