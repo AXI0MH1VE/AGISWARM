@@ -65,7 +65,7 @@ class Aggregator(asyncio.DatagramProtocol):
         logging.info(f"--- Starting Cycle {self.seq} ---")
         for i in range(self.N):
             coeffs, coded_row_block = self.coder.generate_task(self.x_curr)
-            payload = pack_task(self.seq, i, coeffs, self.x_curr)
+            payload = pack_task(self.seq, i, coeffs, self.x_curr, coded_row_block)
             self.transport.sendto(payload, ('127.0.0.1', self.worker_base_port + i))
         while len(self.results_buffer) < self.R:
             if (time.time() - self.cycle_start_ts) > 0.5:

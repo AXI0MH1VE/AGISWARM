@@ -1,15 +1,18 @@
 import cbor2
 import time
 
-def pack_task(seq, tid, coeffs, x_fixed):
-    return cbor2.dumps({
+def pack_task(seq, tid, coeffs, x_fixed, coded_matrix=None):
+    task = {
         "t": "TASK",
         "seq": seq,
         "tid": tid,
         "c": coeffs,
         "x": x_fixed,
         "ts": time.time_ns()
-    })
+    }
+    if coded_matrix is not None:
+        task["M"] = coded_matrix
+    return cbor2.dumps(task)
 
 def pack_result(seq, tid, worker_id, y_fixed):
     return cbor2.dumps({
