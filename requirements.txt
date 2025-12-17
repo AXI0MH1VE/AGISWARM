@@ -5,4 +5,4 @@ numpy
 pyyaml
 pandas
 matplotlib
-
+PyQt5
