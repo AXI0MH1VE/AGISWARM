@@ -98,7 +98,16 @@ If you don't want to install PyQt5, use the command-line interface instead:
 python operator/operator_cli.py
 ```
 
-The CLI provides the same functionality without GUI dependencies.
+The CLI provides similar functionality without GUI dependencies:
+- **Automatic Mode**: Continuously monitors `proposed_state.json` and auto-signs when sequence numbers change
+- **No Manual File Selection**: Always uses `operator.sk` and `proposed_state.json` in current directory
+- **Console Output**: Text-based status messages instead of GUI dialogs
+- **Best for**: Automated workflows, demo mode, and headless operation
+
+**Key Differences from UI**:
+- CLI runs in a loop and auto-signs new states; UI requires manual button clicks
+- CLI expects hex-encoded key in `operator.sk`; UI expects raw 32-byte binary
+- CLI auto-commits on state changes; UI provides explicit review and approval workflow
 
 ## Network Bridge Scripts (Linux/macOS)
 

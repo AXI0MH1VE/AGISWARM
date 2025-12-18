@@ -190,7 +190,29 @@ For headless operation, use the CLI alternative:
 python operator/operator_cli.py
 ```
 
-The CLI provides the same signing and transmission functionality without GUI dependencies.
+### CLI vs GUI Differences
+
+The CLI (`operator_cli.py`) provides similar but distinct functionality:
+
+**CLI Characteristics**:
+- **Automatic Mode**: Continuously monitors `proposed_state.json` and auto-signs when sequence numbers change
+- **Key Format**: Expects hex-encoded Ed25519 key in `operator.sk`
+- **Message Format**: Different CBOR structure with `{"t": "COMMIT", "seq": ..., "sig": ..., "pk": ...}`
+- **Fixed Paths**: Always uses `operator.sk` and `proposed_state.json` from current directory
+- **Console Output**: Text-based status messages
+- **Auto-commit**: Signs and sends automatically without manual approval
+
+**GUI Characteristics**:
+- **Manual Mode**: Requires explicit button clicks to load state and sign
+- **Key Format**: Expects raw 32-byte binary Ed25519 key in `operator.sk`
+- **Message Format**: Full state CBOR with `{"type": "commit_token", "state": {...}, "signature": ..., "verify_key": ...}`
+- **File Selection**: GUI dialogs allow choosing custom key/state file paths
+- **Visual Feedback**: Status labels, activity logs, error dialogs
+- **Manual Review**: Explicit approval workflow for operator oversight
+
+**When to Use Each**:
+- **Use CLI**: Automated workflows, demo mode, rapid testing, headless servers
+- **Use GUI**: Production operations requiring human approval, visual state review, manual control
 
 ## Aggregator Integration
 
