@@ -160,6 +160,12 @@ class OperatorUI(QMainWindow):
             with open(key_path, "r") as f:
                 sk_hex = f.read().strip()
             
+            if not sk_hex:
+                raise ValueError("Key file is empty")
+            
+            if len(sk_hex) != 64:
+                raise ValueError(f"Invalid key length: expected 64 hex characters, got {len(sk_hex)}")
+            
             self.signing_key = nacl.signing.SigningKey(sk_hex, encoder=nacl.encoding.HexEncoder)
             self.status_label.setText(f"Status: Operator key loaded from {self.operator_key_path}")
             self.status_label.setStyleSheet("padding: 5px; background-color: #ccffcc;")
