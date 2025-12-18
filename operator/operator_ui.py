@@ -14,7 +14,7 @@ Requirements:
 
 Configuration:
 - UDP Target: 127.0.0.1:6000 (aggregator)
-- Operator Key: operator.sk (Ed25519 secret key, 32 bytes)
+- Operator Key: operator.sk (Ed25519 secret key, hex-encoded)
 - Proposed State: proposed_state.json (JSON format)
 
 Usage:
@@ -157,13 +157,16 @@ class OperatorUI(QMainWindow):
                 self.log("Please generate a key using: python operator/keygen.py")
                 return
 
-            with open(key_path, "rb") as f:
-                key_bytes = f.read()
+            with open(key_path, "r") as f:
+                sk_hex = f.read().strip()
             
-            if len(key_bytes) != 32:
-                raise ValueError(f"Invalid key file: expected 32 bytes, got {len(key_bytes)}")
+            if not sk_hex:
+                raise ValueError("Key file is empty")
             
-            self.signing_key = nacl.signing.SigningKey(key_bytes)
+            if len(sk_hex) != 64:
+                raise ValueError(f"Invalid key length: expected 64 hex characters, got {len(sk_hex)}")
+            
+            self.signing_key = nacl.signing.SigningKey(sk_hex, encoder=nacl.encoding.HexEncoder)
             self.status_label.setText(f"Status: Operator key loaded from {self.operator_key_path}")
             self.status_label.setStyleSheet("padding: 5px; background-color: #ccffcc;")
             self.log(f"✓ Operator key loaded successfully from {self.operator_key_path}")
@@ -178,7 +181,7 @@ class OperatorUI(QMainWindow):
                 "Key Loading Error",
                 f"{error_msg}\n\nPlease ensure:\n"
                 f"1. The file exists at {self.operator_key_path}\n"
-                f"2. The file contains a valid 32-byte Ed25519 secret key\n"
+                f"2. The file contains a valid hex-encoded Ed25519 secret key\n"
                 f"3. Generate a key with: python operator/keygen.py"
             )
 
